@@ -32,10 +32,17 @@ class Square:
             if self.coords.y > 380:
                 self.bounce = True
                 self.coords.y = 380
-                self.vel.y = self.vel.y * -0.6
+                self.vel.y = self.vel.y * -0.9
 
-        self.vel.x += self.acc.x
-        self.coords.x += self.vel.x
+        if self.coords.x >= 0 and self.coords.x <= 580:
+            self.vel.x += self.acc.x
+            self.coords.x += self.vel.x
+        elif self.coords.x >= 580:
+            self.coords.x = 580
+            self.vel.x = self.vel.x * -1
+        else:
+            self.coords.x = 0
+            self.vel.x = self.vel.x * -1
 
     def info(self):
         print(f"Id: {self.id}")
@@ -51,9 +58,16 @@ g: float = 9.81 * (1 / 60)
 
 objects: List[Square] = []
 
-objects.append(
-    Square(0, 20, Vector2D(40, 40), Vector2D(0, 0), Vector2D(0, g), (0, 255, 0))
-)
+# objects.append(
+#     Square(0, 20, Vector2D(40, 40), Vector2D(0, 0), Vector2D(0, g), (0, 255, 0)),
+#     Square(1, 20, Vector2D(80, 10), Vector2D(0, 0), Vector2D(0, g), (0, 0, 255)),
+# )
+
+objects += [
+    Square(0, 20, Vector2D(40, 40), Vector2D(6, 0), Vector2D(0, g), (0, 255, 0)),
+    Square(1, 20, Vector2D(80, 10), Vector2D(3, 0), Vector2D(0, g), (0, 0, 255)),
+    Square(2, 20, Vector2D(300, 10), Vector2D(4, 0), Vector2D(0, g), (255, 0, 0)),
+]
 
 
 running = True
@@ -75,7 +89,7 @@ while running:
                 (objects[i].size, objects[i].size),
             ),
         )
-        pygame.display.flip()
+    pygame.display.flip()
     time.sleep(1 / 60)
 
 pygame.quit()
